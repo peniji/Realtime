@@ -30,5 +30,12 @@ pipeline {
         failure {
             echo '❌ Maven build failed'
         }
+        stage('Build Docker Image') {
+            steps {
+                echo 'Building Docker image...'
+                sh 'docker build -t hello-node-app:latest .'
+            }
+        }
+    }
     }
 }
