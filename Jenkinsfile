@@ -1,21 +1,34 @@
+
 pipeline {
     agent any
 
+    tools {
+        maven 'Maven3'   // Must match the name in Jenkins Global Tool Configuration
+    }
+
     stages {
-        stage('checkout') {
+
+        stage('Checkout') {
             steps {
-                echo 'Hello World'
+                echo 'Checking out source code from GitHub...'
+                checkout scm
             }
         }
-        stage('build') {
+
+        stage('Maven Build') {
             steps {
-                echo 'hi there!'
+                echo 'Running Maven build...'
+                sh 'mvn clean package'
             }
         }
-        stage('deploy') {
-            steps {
-                echo 'hello'
-            }
+    }
+
+    post {
+        success {
+            echo '✅ Checkout and Maven build completed successfully'
+        }
+        failure {
+            echo '❌ Maven build failed'
         }
     }
 }
